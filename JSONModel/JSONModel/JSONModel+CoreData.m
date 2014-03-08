@@ -9,7 +9,7 @@
 #import "JSONModel+CoreData.h"
 #import <objc/runtime.h>
 #import <objc/message.h>
-
+#import "ISO8601DateFormatter.h"
 @implementation JSONModel(CoreData)
 
 @end
@@ -117,9 +117,8 @@
 #pragma mark - string <-> date
 -(NSDate*)__NSDateFromNSString:(NSString*)string
 {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    string = [string stringByReplacingOccurrencesOfString:@":" withString:@""]; // this is such an ugly code, is this the only way?
-    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HHmmssZZZZ"];
+    
+    ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc]init];
     
     return [dateFormatter dateFromString: string];
 }
