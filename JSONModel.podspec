@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.author       = { "Marin Todorov" => "touch-code-magazine@underplot.com" }
 
   s.source       = { :git => "https://github.com/icanzilb/JSONModel.git", :tag => "0.12.0" }
-
+  spec.dependency 'ISO8601DateFormatter'
   s.ios.deployment_target = '5.0'
   s.osx.deployment_target = '10.7'
 
