@@ -13,7 +13,6 @@
 #import "YouTubeViewController.h"
 #import "StorageViewController.h"
 #import "KivaViewControllerNetworking.h"
-#import "CoreDataViewController.h"
 
 #import "JSONModel+networking.h"
 #import "VideoModel.h"
@@ -98,18 +97,31 @@
 @interface TopModel : JSONModel
 @property (assign, nonatomic) int id;
 @property (strong, nonatomic) JSONAnswer<Optional>* answer;
+@property (assign, nonatomic, readonly) int rId;
+@property (nonatomic, copy) void(^userLocationCompleted)();
+@property (strong, nonatomic) NSDictionary* dict;
+@property (strong, nonatomic) NSString* description;
 @end
 
 @implementation TopModel
++(BOOL)propertyIsIgnored:(NSString *)propertyName
+{
+    return NO;
+}
+-(NSString*)getText
+{
+    return @"1123";
+}
 @end
 
 @implementation MasterViewController
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    NSString* json = @"{\"id\":1, \"answer\": {\"name1\":\"marin\"}}";
+    NSString* json = @"{\"id\":1, \"answer\": {\"name1\":\"marin\"}, \"dict\":[], \"description\":\"Marin\"}";
     TopModel* tm = [[TopModel alloc] initWithString:json error:nil];
-    NSLog(@"tm: %@", tm);
+    NSLog(@"tm: %@", tm.toDictionary);
+    NSLog(@"to string: %@", tm.toJSONString);
 }
 
 -(IBAction)actionLoadCall:(id)sender
@@ -127,7 +139,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.title = @"Demos";
-        _objects = [NSMutableArray arrayWithArray:@[@"Kiva.org demo", @"GitHub demo", @"Youtube demo", @"Used for storage", @"Kiva.org + own networking", @"Core Data integration"]];
+        _objects = [NSMutableArray arrayWithArray:@[@"Kiva.org demo", @"GitHub demo", @"Youtube demo", @"Used for storage"]];
     }
     return self;
 }
@@ -182,16 +194,6 @@
             [self.navigationController pushViewController:sc animated:YES];
         }break;
 
-        case 4:{
-            KivaViewControllerNetworking* sc  = [[KivaViewControllerNetworking alloc] initWithNibName:@"KivaViewControllerNetworking" bundle:nil];
-            [self.navigationController pushViewController:sc animated:YES];
-        }break;
-
-        case 5:{
-            CoreDataViewController* cdvc = [[CoreDataViewController alloc] initWithNibName:@"CoreDataViewController" bundle:nil];
-            [self.navigationController pushViewController:cdvc animated:YES];
-        }break;
-            
         default:
             break;
     }

@@ -1,11 +1,11 @@
 //
 //  JSONModelArray.m
 //
-//  @version 0.12.0
+//  @version 1.0.0
 //  @author Marin Todorov, http://www.touch-code-magazine.com
 //
 
-// Copyright (c) 2012-2013 Marin Todorov, Underplot ltd.
+// Copyright (c) 2012-2014 Marin Todorov, Underplot ltd.
 // This code is distributed under the terms and conditions of the MIT license.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -34,27 +34,32 @@
     return self;
 }
 
--(id)firstObject
+- (id)firstObject
 {
     return [self objectAtIndex:0];
 }
 
--(id)lastObject
+- (id)lastObject
 {
-    return [self objectAtIndex: _storage.count-1];
+    return [self objectAtIndex:_storage.count - 1];
 }
 
--(id)objectAtIndex:(NSUInteger)index
+- (id)objectAtIndex:(NSUInteger)index
 {
-    id obj = _storage[index];
-    if (![obj isMemberOfClass:_targetClass]) {
+	return [self objectAtIndexedSubscript:index];
+}
+
+- (id)objectAtIndexedSubscript:(NSUInteger)index
+{
+    id object = _storage[index];
+    if (![object isMemberOfClass:_targetClass]) {
         NSError* err = nil;
-        obj = [[_targetClass alloc] initWithDictionary:obj error:&err];
-        if (obj) {
-            _storage[index] = obj;
+        object = [[_targetClass alloc] initWithDictionary:object error:&err];
+        if (object) {
+            _storage[index] = object;
         }
     }
-    return obj;
+    return object;
 }
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation
@@ -65,7 +70,7 @@
 -(id)forwardingTargetForSelector:(SEL)selector
 {
     static NSArray* overridenMethods = nil;
-    if (!overridenMethods) overridenMethods = @[@"initWithArray:modelClass:",@"objectAtIndex:",@"count",@"modelWithIndexValue:",@"description",@"mutableCopy",@"firstObject",@"lastObject"];
+    if (!overridenMethods) overridenMethods = @[@"initWithArray:modelClass:",@"objectAtIndex:",@"objectAtIndexedSubscript:", @"count",@"modelWithIndexValue:",@"description",@"mutableCopy",@"firstObject",@"lastObject"];
     if ([overridenMethods containsObject:NSStringFromSelector(selector)]) {
         return self;
     }

@@ -33,4 +33,10 @@
 /* URLs */
 @property (strong, nonatomic) NSURL* websiteURL;
 
+/* Time zone */
+@property (strong, nonatomic) NSTimeZone *timeZone;
+
+/* String array */
+@property (strong, nonatomic) NSArray* stringArray;
+
 @end
